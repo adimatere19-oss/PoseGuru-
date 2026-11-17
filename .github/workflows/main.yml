@@ -1,0 +1,48 @@
+name: Build PoseGuru Android APK
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+
+      - name: Extract PoseGuru project
+        run: |
+          unzip -q PoseGuru_Android_APK_Build_Ready_Package.zip -d source
+
+      - name: Prepare Android project
+        working-directory: source/PoseGuru_Final/flutter
+        run: flutter create --platforms=android .
+
+      - name: Install dependencies
+        working-directory: source/PoseGuru_Final/flutter
+        run: flutter pub get
+
+      - name: Build APK
+        working-directory: source/PoseGuru_Final/flutter
+        run: flutter build apk --debug
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: PoseGuru-Android-APK
+          path: source/PoseGuru_Final/flutter/build/app/outputs/flutter-apk/app-debug.apk
