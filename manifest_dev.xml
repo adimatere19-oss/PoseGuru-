@@ -1,0 +1,11 @@
+<!-- DEVELOPMENT ONLY: merge the permission into AndroidManifest.xml.
+Do not ship usesCleartextTraffic=true in a production release. Use HTTPS. -->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <application
+        android:label="PoseGuru"
+        android:usesCleartextTraffic="true">
+        <!-- Keep your existing Flutter activity and application entries. -->
+    </application>
+</manifest>
